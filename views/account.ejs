@@ -1,0 +1,108 @@
+<%- include('./partial/header') %>
+
+<div class="min-h-screen px-6 py-12 bg-gray-100">
+  <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <div class="flex items-center p-6 border-b border-gray-200">
+      <% if (user.image) { %>
+        <img src="data:image/jpeg;base64,<%= Buffer.from(user.image).toString('base64') %>"
+          class="w-16 h-16 object-cover rounded" />
+      <% } else { %>
+        <img src="https://via.placeholder.com/64" class="w-16 h-16 object-cover rounded" />
+      <% } %>
+
+      <div class="ml-6">
+        <h2 class="text-2xl font-semibold text-gray-800"><%= user.fullName %></h2>
+        <p class="text-gray-500"><%= user.email %></p>
+        <p class="text-gray-500">+91 <%= user.contact %></p>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="px-6 py-4 border-b border-gray-200 flex gap-6 text-sm font-medium text-gray-600">
+      <a href="#orders" class="hover:text-black transition">My Orders</a>
+      <a href="#cart" class="hover:text-black transition">My Cart</a>
+      <a href="#settings" class="hover:text-black transition">Settings</a>
+    </div>
+
+    <!-- Orders Section -->
+    <div id="orders" class="p-6">
+      <h3 class="text-xl font-semibold mb-4">My Orders</h3>
+      <% if (user.orders.length > 0) { %>
+        <ul>
+          <% user.orders.forEach(function(product) { %>
+            <li class="flex items-center p-6 border-b border-gray-200">
+              <% if (product.image) { %>
+                <img src="data:image/jpeg;base64,<%= Buffer.from(product.image).toString('base64') %>"
+                  class="w-16 h-16 object-cover rounded" />
+              <% } else { %>
+                <img src="https://via.placeholder.com/64" class="w-16 h-16 object-cover rounded" />
+              <% } %>
+              <div class="ml-4">
+                <h4 class="font-semibold"><%= product.name %></h4>
+                <p class="text-gray-500">₹ <%= product.price %></p>
+              </div>
+            </li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p class="text-gray-500">You have no orders yet.</p>
+      <% } %>
+    </div>
+
+    <!-- Cart Section -->
+    <div id="cart" class="p-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold mb-4">My Cart</h3>
+      <% if (user.cart.length > 0) { %>
+        <ul class="space-y-4">
+          <% user.cart.forEach(product => { %>
+            <li class="flex items-center justify-between border rounded-md p-4">
+              <div class="flex items-center gap-4">
+                <% if (product.image) { %>
+                  <img src="data:image/jpeg;base64,<%= Buffer.from(product.image).toString('base64') %>"
+                    class="w-16 h-16 object-cover rounded" />
+                <% } else { %>
+                  <img src="https://via.placeholder.com/64" class="w-16 h-16 object-cover rounded" />
+                <% } %>
+                <div>
+                  <h4 class="font-semibold"><%= product.name %></h4>
+                  <p class="text-sm text-gray-500">₹ <%= product.price %></p>
+                </div>
+              </div>
+              <form action="/remove-from-cart/<%= product._id %>" method="POST">
+                <button type="submit" class="text-red-600 hover:underline text-sm">Remove</button>
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p class="text-gray-500">Your cart is empty.</p>
+      <% } %>
+    </div>
+
+    <!-- Settings Section -->
+    <div id="settings" class="p-6 border-t border-gray-200">
+      <h3 class="text-xl font-semibold mb-4">Settings</h3>
+      <form action="/account/update" method="POST" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Full Name</label>
+          <input name="fullName" value="<%= user.fullName %>"
+            class="mt-1 w-full border border-gray-300 rounded-md px-4 py-2 text-sm" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Contact</label>
+          <input name="contact" value="<%= user.contact %>"
+            class="mt-1 w-full border border-gray-300 rounded-md px-4 py-2 text-sm" />
+        </div>
+        <div>
+          <button type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded-md text-sm hover:bg-blue-700 transition">Update
+            Profile</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<%- include('./partial/footer') %>

@@ -1,0 +1,39 @@
+<%- include('./partial/header') %>
+
+<div class="w-full min-h-screen px-20 py-20">
+  <h2 class="text-2xl font-bold mb-5">Your Cart</h2>
+
+  <% if (user.cart.length === 0) { %>
+    <p>No items in cart.</p>
+  <% } else { %>
+    <% let totalPrice = 0; %>
+    <% let totalQuantity = user.cart.length; %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% user.cart.forEach((product) => { %>
+        <% totalPrice += product.price; %>
+        <div class="bg-gray-100 rounded-md overflow-hidden shadow">
+          <div class="h-48 bg-gray-200 flex items-center justify-center">
+            <img class="h-full object-contain" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>" />
+          </div>
+          <div class="p-4 flex justify-between items-center">
+            <div>
+              <h3 class="text-lg font-semibold"><%= product.name %></h3>
+              <p>₹ <%= product.price %></p>
+            </div>
+            <button class="w-8 h-8 bg-white rounded-full shadow flex items-center justify-center">
+              <i class="ri-add-line"></i>
+            </button>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <div class="mt-10 border-t pt-5 flex justify-between items-center">
+      <h3 class="text-xl">Total Items: <%= totalQuantity %></h3>
+      <h3 class="text-xl font-semibold text-green-600">Net Total: ₹ <%= totalPrice %></h3>
+    </div>
+  <% } %>
+</div>
+
+<%- include('./partial/footer') %>
