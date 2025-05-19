@@ -22,21 +22,26 @@ A simple e-commerce web application built with Node.js, Express.js, MongoDB (Mon
 ```bash
 git clone https://github.com/yourusername/ecommerce-app.git
 cd ecommerce-app
+
 2. Install dependencies
 npm install
+
 3. Start MongoDB (locally)
 Make sure MongoDB is running locally on your machine:
 mongod
+
 4. Run the app
 node app.js
 Or, if using nodemon:
 nodemon app.js
+
 5. Open in browser
 arduino http://localhost:3000
+
 🔐 Environment Variables (Optional)
 Create a .env file if you wish to store sensitive configs:
 MONGO_URI=mongodb://localhost:27017/scatch
-PORT=3000
+
 🧪 Dependencies
 express
 mongoose
